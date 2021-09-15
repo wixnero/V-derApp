@@ -1,0 +1,27 @@
+:root{
+    --MainBGcolor: rgb(216, 212, 2);
+    --MainTxtColor: rgb(253, 253, 253);
+}
+
+body{
+background-color: var(--MainBGcolor);
+}
+
+.mainHeader{
+    font-size:7em;
+    text-align: center;
+    color: var(--MainTxtColor);
+}
+
+.currentLocation{
+    align-self: center;
+    max-width: 20rem;
+    text-align: center;
+    border-style:solid;
+    border-color: var(--MainTxtColor);
+    border-radius: 45px;
+    border-width: 3px;
+    margin: auto;
+    padding: 10px;
+
+}
