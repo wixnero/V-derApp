@@ -1,29 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <link rel="stylesheet" href="style.css">
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <link rel="stylesheet" href="style.css" />
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>WeatherApp</title>
     <script src="script.js"></script>
-</head>
-<body>
-
-<h1 class="main_header">Daily Weather</h1>
-
-
-    <div  class="current_location">
-        <h2 id="current_zone_name">---</h2>
-        <div >
-          <h4 class="main_temp" id="current_temp"></h4>
-          <p id="expectedWeather"></p>
-        </div>
-     </div>
-
-
-
-    
-</body>
-
+  </head>
+  <body>
+    <nav class="hpNavbar">
+      <div class="container-fluid">
+        <a class="navbar-brand">Navbar</a>
+        <form class="d-flex">
+          <input
+            class="form-control me-2"
+            type="search"
+            placeholder="Search Location"
+          />
+          <button class="btn btn-outline-success" type="submit">Search</button>
+        </form>
+      </div>
+    </nav>
+    <h1 class="main_header">Daily Weather</h1>
+    <div class="current_location">
+      <h2 id="current_zone_name">---</h2>
+      <h4 class="main_temp" id="current_temp"></h4>
+      <p id="expectedWeather"></p>
+    </div>
+  </body>
 </html>

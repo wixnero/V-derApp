@@ -1,39 +1,43 @@
-:root{
-    --MainBGcolor: rgb(216, 212, 2);
-    --MainTxtColor: rgb(253, 253, 253);
+:root {
+  --MainBGcolor: rgb(182, 180, 97);
+  --SecondBGcolor: rgb(192, 191, 157);
+  --MainTxtColor: rgb(253, 253, 253);
 }
 
-body{
-background-color: var(--MainBGcolor);
+body {
+  background-color: var(--MainBGcolor);
 }
 
-.main_header{
-    font-size:7em;
-    text-align: center;
-    color: var(--MainTxtColor);
+.main_header {
+  font-size: 7em;
+  text-align: center;
+  color: var(--MainTxtColor);
 }
 
-.current_location{
-    align-self: center;
-   
-    max-width: 20rem;
-    text-align: center;
-    border-style:solid;
-    border-color: var(--MainTxtColor);
-    border-radius: 45px;
-    border-width: 3px;
-    margin: auto;
-    padding: 10px;
-    transition: transform .2s;
-
-
+.current_location {
+  align-self: center;
+  max-width: 20rem;
+  text-align: center;
+  border-style: solid;
+  border-color: var(--MainTxtColor);
+  border-radius: 45px;
+  border-width: 3px;
+  margin: auto;
+  padding: 10px;
+  transition: transform 0.2s;
 }
-.main_temp{
-    color: var(--MainTxtColor);
-    font-size: 2em;
+#current_zone_name {
+  color: var(--MainTxtColor);
+  font-size: 2em;
 }
-.current_location:hover{
-    transform: scale(1.1);
-    background-color: rgb(236, 233, 5);
-   
+.current_location:hover {
+  transform: scale(1.1);
+  background-color: rgb(148, 147, 82);
+}
+
+.hpNavbar {
+  background-color: var(--SecondBGcolor);
+  width: 100%;
+  align-content: space-between;
+  align-items: center;
 }
