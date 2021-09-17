@@ -33,6 +33,7 @@ body {
 .current_location:hover {
   transform: scale(1.1);
   background-color: rgb(148, 147, 82);
+  cursor: pointer;
 }
 
 .hpNavbar {
