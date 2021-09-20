@@ -9,7 +9,7 @@ document
     if (daysList.length < 1) {
       GetWeeklyForecast(document.getElementById("current_zone_name").innerHTML);
     } else {
-      location.reload();
+      div = document.getElementById("forecast_temp").innerHTML = "";
       daysList = [];
       GetGeoLocation();
     }
@@ -23,6 +23,7 @@ document.getElementById("btn_search").addEventListener("click", function () {
     "&units=metric&appid=b5a6a4e37d967936d274f4adc367b506";
 
   SetCurrentLocation(APIstring);
+  div = document.getElementById("forecast_temp").innerHTML = "";
 });
 
 function GetGeoLocation() {
@@ -55,7 +56,6 @@ function SetCurrentLocation(APIstring) {
         }
       })
       .then(function (obj) {
-        console.log(obj);
         currentLocation.city = obj.name;
         currentLocation.temp = obj.main.temp;
         document.getElementById("current_temp").innerHTML =
@@ -83,14 +83,29 @@ function GetWeeklyForecast(location) {
 }
 
 function filterAndDisplayDays(obj) {
+  // console.log(obj);
   var date;
   var hour;
+  var elementDay = new Date(obj.list[0].dt_txt).getDay();
+  var ElementsWithSameDay = [];
+
+  var div = document.getElementById("forecast_temp");
 
   obj.list.forEach((element) => {
     date = new Date(element.dt_txt);
     hour = date.getHours();
 
-    if (hour == 12) {
+    if (elementDay == date.getDay()) {
+      ElementsWithSameDay.push(element);
+    } else {
+      CreateDayWithHighLow(ElementsWithSameDay);
+
+      elementDay = date.getDay();
+      ElementsWithSameDay = [];
+      ElementsWithSameDay.push[element];
+    }
+
+    if (hour == 09) {
       daysList.push(element);
     }
   });
@@ -98,7 +113,6 @@ function filterAndDisplayDays(obj) {
   if (daysList.length > 0) {
     for (var i = 0; i <= 4; i++) {
       var day = daysList[i];
-      var div = document.getElementById("location_details");
 
       var h2temp = document.createElement("h4");
       var h3Date = document.createElement("h3");
@@ -109,4 +123,24 @@ function filterAndDisplayDays(obj) {
       div.appendChild(h2temp);
     }
   }
+}
+
+function CreateDayWithHighLow(ElementsWithSameDay) {
+  let high = 0;
+  let low = 500;
+
+  for (i = 0; i < ElementsWithSameDay.length; i++) {
+    if (parseFloat(ElementsWithSameDay[i].main.temp_max) > high) {
+      high = parseFloat(ElementsWithSameDay[i].main.temp_max);
+    }
+    if (parseFloat(ElementsWithSameDay[i].main.temp_min) < low) {
+      low = parseFloat(ElementsWithSameDay[i].main.temp_min);
+    }
+  }
+
+  // skapa objekt för att lägga till i prognos.
+
+  console.log(ElementsWithSameDay);
+  console.log(high);
+  console.log(low);
 }
