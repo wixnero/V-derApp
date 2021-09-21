@@ -15,6 +15,7 @@ document
     }
   });
 document.getElementById("btn_search").addEventListener("click", function () {
+  div = document.getElementById("forecast_temp").innerHTML = "";
   var searchString = document.getElementById("searchbar").value;
 
   var APIstring =
@@ -23,7 +24,6 @@ document.getElementById("btn_search").addEventListener("click", function () {
     "&units=metric&appid=b5a6a4e37d967936d274f4adc367b506";
 
   SetCurrentLocation(APIstring);
-  div = document.getElementById("forecast_temp").innerHTML = "";
 });
 
 function GetGeoLocation() {
@@ -83,32 +83,41 @@ function GetWeeklyForecast(location) {
 }
 
 function filterAndDisplayDays(obj) {
-  // console.log(obj);
+  console.log(obj);
   var date;
   var hour;
-  var elementDay = new Date(obj.list[0].dt_txt).getDay();
-  var ElementsWithSameDay = [];
-
+  var elementDay = new Date(obj.list[3].dt_txt).getDay();
+  var dayWithAddedMinMax = null;
+  var ElementsWithSameDate = [];
   var div = document.getElementById("forecast_temp");
 
-  obj.list.forEach((element) => {
-    date = new Date(element.dt_txt);
+  //console.log(obj.list.length);
+  for (i = 3; i < obj.list.length; i++) {
+    date = new Date(obj.list[i].dt_txt);
+    //console.log(elementDay);
     hour = date.getHours();
 
-    if (elementDay == date.getDay()) {
-      ElementsWithSameDay.push(element);
+    obj.list[i].main.temp = GetDayMaxMin(ElementsWithSameDate);
+
+    if (elementDay == date.getDay() && i != obj.list.length - 1) {
+      ElementsWithSameDate.push(obj.list[i]);
+      dayWithAddedMinMax = obj.list[i];
+    } else if (i == obj.list.length - 1) {
+      ElementsWithSameDate.push(obj.list[i]);
+      obj.list[i].main.temp = GetDayMaxMin(ElementsWithSameDate);
+      dayWithAddedMinMax = obj.list[i];
+      daysList.push(dayWithAddedMinMax);
+      continue;
     } else {
-      CreateDayWithHighLow(ElementsWithSameDay);
+      daysList.push(dayWithAddedMinMax);
+      dayWithAddedMinMax = obj.list[i];
 
       elementDay = date.getDay();
-      ElementsWithSameDay = [];
-      ElementsWithSameDay.push[element];
-    }
+      ElementsWithSameDate = [];
 
-    if (hour == 09) {
-      daysList.push(element);
+      ElementsWithSameDate.push[obj.list[i]];
     }
-  });
+  }
 
   if (daysList.length > 0) {
     for (var i = 0; i <= 4; i++) {
@@ -116,8 +125,8 @@ function filterAndDisplayDays(obj) {
 
       var h2temp = document.createElement("h4");
       var h3Date = document.createElement("h3");
-      h2temp.innerHTML = day.main.temp + "°C";
-      h3Date.innerHTML = day.dt_txt;
+      h2temp.innerHTML = day.main.temp;
+      h3Date.innerHTML = new Date(day.dt_txt).getUTCDate();
 
       div.appendChild(h3Date);
       div.appendChild(h2temp);
@@ -125,22 +134,18 @@ function filterAndDisplayDays(obj) {
   }
 }
 
-function CreateDayWithHighLow(ElementsWithSameDay) {
-  let high = 0;
-  let low = 500;
+function GetDayMaxMin(ElementsWithSameDay) {
+  let max = 0;
+  let min = 500;
 
   for (i = 0; i < ElementsWithSameDay.length; i++) {
-    if (parseFloat(ElementsWithSameDay[i].main.temp_max) > high) {
-      high = parseFloat(ElementsWithSameDay[i].main.temp_max);
+    if (parseFloat(ElementsWithSameDay[i].main.temp_max) > max) {
+      max = parseFloat(ElementsWithSameDay[i].main.temp_max);
     }
-    if (parseFloat(ElementsWithSameDay[i].main.temp_min) < low) {
-      low = parseFloat(ElementsWithSameDay[i].main.temp_min);
+    if (parseFloat(ElementsWithSameDay[i].main.temp_min) < min) {
+      min = parseFloat(ElementsWithSameDay[i].main.temp_min);
     }
   }
 
-  // skapa objekt för att lägga till i prognos.
-
-  console.log(ElementsWithSameDay);
-  console.log(high);
-  console.log(low);
+  return "Max: " + max + "°C" + " - Min: " + min + "°C";
 }
