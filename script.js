@@ -1,21 +1,35 @@
 const currentLocation = { long: "", lat: "", temp: 0, city: "" };
 var locationPermission = false;
+var foreCastDiv = document.getElementById("forecast_temp");
 var daysList = [];
+var favorites = [];
+foreCastDiv.hidden = true;
 GetGeoLocation();
 
+//<comment>
+// Opends/close the location div and calls function
+// to get a five day forecast.
+//</comment>
 document
   .getElementById("location_details")
   .addEventListener("click", function () {
-    if (daysList.length < 1) {
+    if (foreCastDiv.hidden == true) {
       GetWeeklyForecast(document.getElementById("current_zone_name").innerHTML);
-    } else {
-      div = document.getElementById("forecast_temp").innerHTML = "";
+
+      foreCastDiv.hidden = false;
       daysList = [];
       GetGeoLocation();
+    } else {
+      foreCastDiv.hidden = true;
     }
   });
+
+//<comment>
+// Gets the user input and calls API with entered location.
+//</comment>
 document.getElementById("btn_search").addEventListener("click", function () {
-  div = document.getElementById("forecast_temp").innerHTML = "";
+  document.getElementById("forecast_temp").innerHTML = "";
+  foreCastDiv.hidden = true;
   var searchString = document.getElementById("searchbar").value;
 
   var APIstring =
@@ -25,6 +39,10 @@ document.getElementById("btn_search").addEventListener("click", function () {
 
   SetCurrentLocation(APIstring);
 });
+
+document
+  .getElementById("add_favorite")
+  .addEventListener("click", function () {});
 
 function GetGeoLocation() {
   if (locationPermission == false) {
@@ -89,7 +107,6 @@ function filterAndDisplayDays(obj) {
   var elementDay = new Date(obj.list[3].dt_txt).getDay();
   var dayWithAddedMinMax = null;
   var ElementsWithSameDate = [];
-  var div = document.getElementById("forecast_temp");
 
   //console.log(obj.list.length);
   for (i = 3; i < obj.list.length; i++) {
@@ -120,6 +137,7 @@ function filterAndDisplayDays(obj) {
   }
 
   if (daysList.length > 0) {
+    foreCastDiv.innerHTML = "";
     for (var i = 0; i <= 4; i++) {
       var day = daysList[i];
 
@@ -128,8 +146,8 @@ function filterAndDisplayDays(obj) {
       h2temp.innerHTML = day.main.temp;
       h3Date.innerHTML = new Date(day.dt_txt).getUTCDate();
 
-      div.appendChild(h3Date);
-      div.appendChild(h2temp);
+      foreCastDiv.appendChild(h3Date);
+      foreCastDiv.appendChild(h2temp);
     }
   }
 }

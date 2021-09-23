@@ -39,6 +39,20 @@ body {
 .hpNavbar {
   background-color: var(--SecondBGcolor);
   width: 100%;
-  align-content: space-between;
-  align-items: center;
+  display: inline;
+  justify-content: space-between;
+  display: block;
+}
+
+.favorite_btn {
+  padding-top: 10px;
+  align-self: center;
+  display: block;
+  margin: auto;
+  border-style: none;
+  background: none;
+  text-decoration-line: underline;
+}
+.favorite_btn:hover {
+  cursor: pointer;
 }
