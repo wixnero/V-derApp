@@ -56,3 +56,12 @@ body {
 .favorite_btn:hover {
   cursor: pointer;
 }
+
+.favorite_item {
+  margin-bottom: 10px;
+  background-color: wheat;
+}
+
+.favorite_item:hover {
+  cursor: pointer;
+}

@@ -5,6 +5,7 @@ var daysList = [];
 var favorites = [];
 foreCastDiv.hidden = true;
 GetGeoLocation();
+LoadFavorites();
 
 //<comment>
 // Opends/close the location div and calls function
@@ -22,6 +23,7 @@ document
     } else {
       foreCastDiv.hidden = true;
     }
+    CheckIfFavorite();
   });
 
 //<comment>
@@ -40,9 +42,14 @@ document.getElementById("btn_search").addEventListener("click", function () {
   SetCurrentLocation(APIstring);
 });
 
-document
-  .getElementById("add_favorite")
-  .addEventListener("click", function () {});
+document.getElementById("add_favorite").addEventListener("click", function () {
+  if (document.getElementById("current_zone_name").innerHTML != null) {
+    favorites.push(document.getElementById("current_zone_name").innerHTML);
+    localStorage.setItem("favorites", JSON.stringify(favorites));
+    LoadFavorites();
+    CheckIfFavorite();
+  }
+});
 
 function GetGeoLocation() {
   if (locationPermission == false) {
@@ -80,6 +87,7 @@ function SetCurrentLocation(APIstring) {
           currentLocation.temp + "°C";
         document.getElementById("current_zone_name").innerHTML =
           currentLocation.city;
+        CheckIfFavorite();
       });
   } catch (error) {}
 }
@@ -101,44 +109,42 @@ function GetWeeklyForecast(location) {
 }
 
 function filterAndDisplayDays(obj) {
-  console.log(obj);
-  var date;
-  var hour;
-  var elementDay = new Date(obj.list[3].dt_txt).getDay();
+  var todaysDate = new Date().getDay();
+
+  var elementDay = new Date(obj.list[0].dt_txt).getDay();
   var dayWithAddedMinMax = null;
   var ElementsWithSameDate = [];
 
-  //console.log(obj.list.length);
-  for (i = 3; i < obj.list.length; i++) {
-    date = new Date(obj.list[i].dt_txt);
-    //console.log(elementDay);
+  for (i = 0; i < obj.list.length; i++) {
+    var date = new Date(obj.list[i].dt_txt);
     hour = date.getHours();
 
     obj.list[i].main.temp = GetDayMaxMin(ElementsWithSameDate);
 
-    if (elementDay == date.getDay() && i != obj.list.length - 1) {
-      ElementsWithSameDate.push(obj.list[i]);
-      dayWithAddedMinMax = obj.list[i];
-    } else if (i == obj.list.length - 1) {
-      ElementsWithSameDate.push(obj.list[i]);
-      obj.list[i].main.temp = GetDayMaxMin(ElementsWithSameDate);
-      dayWithAddedMinMax = obj.list[i];
-      daysList.push(dayWithAddedMinMax);
-      continue;
-    } else {
-      daysList.push(dayWithAddedMinMax);
-      dayWithAddedMinMax = obj.list[i];
+    if (date.getDay() != todaysDate) {
+      if (elementDay == date.getDay() && i != obj.list.length - 1) {
+        ElementsWithSameDate.push(obj.list[i]);
+        dayWithAddedMinMax = obj.list[i];
+      } else if (i == obj.list.length - 1) {
+        ElementsWithSameDate.push(obj.list[i]);
+        obj.list[i].main.temp = GetDayMaxMin(ElementsWithSameDate);
+        dayWithAddedMinMax = obj.list[i];
+        daysList.push(dayWithAddedMinMax);
+      } else {
+        daysList.push(dayWithAddedMinMax);
+        dayWithAddedMinMax = obj.list[i];
 
-      elementDay = date.getDay();
-      ElementsWithSameDate = [];
+        elementDay = date.getDay();
+        ElementsWithSameDate = [];
 
-      ElementsWithSameDate.push[obj.list[i]];
+        ElementsWithSameDate.push[obj.list[i]];
+      }
     }
   }
 
   if (daysList.length > 0) {
     foreCastDiv.innerHTML = "";
-    for (var i = 0; i <= 4; i++) {
+    for (var i = 1; i <= 5; i++) {
       var day = daysList[i];
 
       var h2temp = document.createElement("h4");
@@ -150,6 +156,61 @@ function filterAndDisplayDays(obj) {
       foreCastDiv.appendChild(h2temp);
     }
   }
+}
+
+function CheckIfFavorite() {
+  console.log(favorites);
+  for (i = 0; i < favorites.length; i++) {
+    console.log(favorites[i]);
+    if (
+      favorites[i] == document.getElementById("current_zone_name").innerHTML
+    ) {
+      document.getElementById("add_favorite").innerHTML = "Marked as favorite";
+      break;
+    } else {
+      document.getElementById("add_favorite").innerHTML = "Add to favorites";
+    }
+  }
+}
+
+function LoadFavorites() {
+  try {
+    favorites = [];
+    storedFavorites = null;
+    var storedFavorites = JSON.parse(localStorage.getItem("favorites"));
+
+    if (storedFavorites != null) {
+      favorites = storedFavorites;
+      InsertFavoritesDropdown();
+    }
+  } catch (error) {}
+}
+
+function InsertFavoritesDropdown() {
+  var dropdown = document.getElementById("ddmenu");
+  dropdown.innerText = "";
+  favorites.forEach((element) => {
+    var favorite = document.createElement("LI");
+    var favoriteNode = document.createTextNode(element);
+    favorite.className = "favorite_item";
+    favorite.addEventListener("click", (event) => GoToFavorite(favoriteNode));
+    favorite.appendChild(favoriteNode);
+
+    dropdown.appendChild(favorite);
+  });
+}
+
+function GoToFavorite(node) {
+  document.getElementById("forecast_temp").innerHTML = "";
+  foreCastDiv.hidden = true;
+  var favoriteValue = node.nodeValue;
+
+  var APIstring =
+    "http://api.openweathermap.org/data/2.5/weather?q=" +
+    favoriteValue +
+    "&units=metric&appid=b5a6a4e37d967936d274f4adc367b506";
+
+  SetCurrentLocation(APIstring);
 }
 
 function GetDayMaxMin(ElementsWithSameDay) {
