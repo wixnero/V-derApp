@@ -65,3 +65,9 @@ body {
 .favorite_item:hover {
   cursor: pointer;
 }
+
+.favorite {
+  display: block;
+  margin-right: auto;
+  margin-left: auto;
+}

@@ -87,6 +87,7 @@ function SetCurrentLocation(APIstring) {
           currentLocation.temp + "°C";
         document.getElementById("current_zone_name").innerHTML =
           currentLocation.city;
+        DrawFavoriteStar();
         CheckIfFavorite();
       });
   } catch (error) {}
@@ -150,7 +151,7 @@ function filterAndDisplayDays(obj) {
       var h2temp = document.createElement("h4");
       var h3Date = document.createElement("h3");
       h2temp.innerHTML = day.main.temp;
-      h3Date.innerHTML = new Date(day.dt_txt).getUTCDate();
+      h3Date.innerHTML = new Date(day.dt_txt).toLocaleDateString();
 
       foreCastDiv.appendChild(h3Date);
       foreCastDiv.appendChild(h2temp);
@@ -159,15 +160,22 @@ function filterAndDisplayDays(obj) {
 }
 
 function CheckIfFavorite() {
-  console.log(favorites);
   for (i = 0; i < favorites.length; i++) {
     console.log(favorites[i]);
     if (
       favorites[i] == document.getElementById("current_zone_name").innerHTML
     ) {
-      document.getElementById("add_favorite").innerHTML = "Marked as favorite";
+      document.getElementById("add_favorite").innerHTML = "";
+      document.getElementById("favorite_star_div").innerHTML = "";
+      document
+        .getElementById("favorite_star_div")
+        .appendChild(DrawFavoriteStar("favorite"));
       break;
     } else {
+      document.getElementById("favorite_star_div").innerHTML = "";
+      document
+        .getElementById("favorite_star_div")
+        .appendChild(DrawFavoriteStar("-"));
       document.getElementById("add_favorite").innerHTML = "Add to favorites";
     }
   }
@@ -213,6 +221,10 @@ function GoToFavorite(node) {
   SetCurrentLocation(APIstring);
 }
 
+//<comment>
+// Checks all tempature data on a specific date and returns
+// the max temp and min temp.
+//</comment>
 function GetDayMaxMin(ElementsWithSameDay) {
   let max = 0;
   let min = 500;
@@ -227,4 +239,29 @@ function GetDayMaxMin(ElementsWithSameDay) {
   }
 
   return "Max: " + max + "°C" + " - Min: " + min + "°C";
+}
+
+function DrawFavoriteStar(marked) {
+  var canvas = document.createElement("canvas");
+  canvas.width = 25;
+  canvas.height = 25;
+  var ctx = canvas.getContext("2d");
+  ctx.fillStyle = "yellow";
+  ctx.moveTo(12, 0);
+  ctx.lineTo(9, 9);
+  ctx.lineTo(0, 11);
+  ctx.lineTo(7, 15);
+  ctx.lineTo(3, 25);
+  ctx.lineTo(12, 19);
+  ctx.lineTo(22, 25);
+  ctx.lineTo(17, 15);
+  ctx.lineTo(25, 11);
+  ctx.lineTo(16, 9);
+  ctx.lineTo(12, 0);
+  ctx.stroke();
+  if (marked == "favorite") {
+    ctx.fill();
+  }
+  canvas.className = "favorite";
+  return canvas;
 }
