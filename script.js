@@ -81,13 +81,17 @@ function SetCurrentLocation(APIstring) {
         }
       })
       .then(function (obj) {
+        console.log(obj);
         currentLocation.city = obj.name;
         currentLocation.temp = obj.main.temp;
         document.getElementById("current_temp").innerHTML =
           currentLocation.temp + "°C";
+
+        document.getElementById("iconImg").src = CreateWeatherIcon(
+          obj.weather[0].icon
+        ).src;
         document.getElementById("current_zone_name").innerHTML =
           currentLocation.city;
-        DrawFavoriteStar();
         CheckIfFavorite();
       });
   } catch (error) {}
@@ -104,6 +108,7 @@ function GetWeeklyForecast(location) {
         return response.json();
       })
       .then(function (obj) {
+        console.log(obj);
         filterAndDisplayDays(obj);
       });
   } catch (error) {}
@@ -147,36 +152,50 @@ function filterAndDisplayDays(obj) {
     foreCastDiv.innerHTML = "";
     for (var i = 1; i <= 5; i++) {
       var day = daysList[i];
-
+      var dayDiv = document.createElement("div");
       var h2temp = document.createElement("h4");
       var h3Date = document.createElement("h3");
+      var icon = CreateWeatherIcon(day.weather[0].icon);
+
+      dayDiv.className = "day_div";
       h2temp.innerHTML = day.main.temp;
       h3Date.innerHTML = new Date(day.dt_txt).toLocaleDateString();
 
-      foreCastDiv.appendChild(h3Date);
-      foreCastDiv.appendChild(h2temp);
+      dayDiv.appendChild(h3Date);
+      dayDiv.appendChild(icon);
+      dayDiv.appendChild(h2temp);
+
+      foreCastDiv.appendChild(dayDiv);
     }
   }
 }
 
 function CheckIfFavorite() {
-  for (i = 0; i < favorites.length; i++) {
-    console.log(favorites[i]);
-    if (
-      favorites[i] == document.getElementById("current_zone_name").innerHTML
-    ) {
-      document.getElementById("add_favorite").innerHTML = "";
-      document.getElementById("favorite_star_div").innerHTML = "";
-      document
-        .getElementById("favorite_star_div")
-        .appendChild(DrawFavoriteStar("favorite"));
-      break;
-    } else {
-      document.getElementById("favorite_star_div").innerHTML = "";
-      document
-        .getElementById("favorite_star_div")
-        .appendChild(DrawFavoriteStar("-"));
-      document.getElementById("add_favorite").innerHTML = "Add to favorites";
+  if (favorites.length < 1) {
+    document.getElementById("favorite_star_div").innerHTML = "";
+    document
+      .getElementById("favorite_star_div")
+      .appendChild(DrawFavoriteStar("-"));
+    document.getElementById("add_favorite").innerHTML = "Add to favorites";
+  } else {
+    for (i = 0; i < favorites.length; i++) {
+      console.log(favorites[i]);
+      if (
+        favorites[i] == document.getElementById("current_zone_name").innerHTML
+      ) {
+        document.getElementById("add_favorite").innerHTML = "";
+        document.getElementById("favorite_star_div").innerHTML = "";
+        document
+          .getElementById("favorite_star_div")
+          .appendChild(DrawFavoriteStar("favorite"));
+        break;
+      } else {
+        document.getElementById("favorite_star_div").innerHTML = "";
+        document
+          .getElementById("favorite_star_div")
+          .appendChild(DrawFavoriteStar("-"));
+        document.getElementById("add_favorite").innerHTML = "Add to favorites";
+      }
     }
   }
 }
@@ -194,6 +213,10 @@ function LoadFavorites() {
   } catch (error) {}
 }
 
+//<comment>
+// Inserts all items from the faviorite array into the
+// dropdown HTML element.
+//</comment>
 function InsertFavoritesDropdown() {
   var dropdown = document.getElementById("ddmenu");
   dropdown.innerText = "";
@@ -264,4 +287,13 @@ function DrawFavoriteStar(marked) {
   }
   canvas.className = "favorite";
   return canvas;
+}
+
+function CreateWeatherIcon(iconCode) {
+  var iconIMG = document.createElement("img");
+
+  iconIMG.src = "https://openweathermap.org/img/wn/" + iconCode + "@4x.png";
+  iconIMG.className = "weatherIcon";
+
+  return iconIMG;
 }

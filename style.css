@@ -71,3 +71,18 @@ body {
   margin-right: auto;
   margin-left: auto;
 }
+
+.weatherIcon {
+  width: 20%;
+}
+
+.day_div {
+  align-self: center;
+
+  text-align: center;
+  border-style: double;
+  border-color: black;
+
+  border-width: 3px;
+  margin: 10px;
+}
