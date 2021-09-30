@@ -86,3 +86,58 @@ body {
   border-width: 3px;
   margin: 10px;
 }
+
+.maxmin {
+  font-size: 16px;
+}
+
+.fdate {
+  background-color: var(--MainTxtColor);
+}
+
+.favorite_btn {
+  padding-top: 10px;
+  align-self: center;
+  display: block;
+  margin: auto;
+  border-style: none;
+  background: none;
+  text-decoration-line: underline;
+}
+.favorite_btn:hover {
+  cursor: pointer;
+}
+
+.favorite_item {
+  margin-bottom: 10px;
+  background-color: wheat;
+}
+
+.favorite_item:hover {
+  cursor: pointer;
+}
+
+.favorite {
+  display: block;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.weatherIcon {
+  width: 20%;
+}
+
+.day_div {
+  align-self: center;
+
+  text-align: center;
+  border-style: double;
+  border-color: black;
+
+  border-width: 3px;
+  margin: 10px;
+}
+
+.main_weather_element{
+  margin-top: 75px;
+}
