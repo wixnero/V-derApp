@@ -114,6 +114,8 @@ function SetCurrentLocation(APIstring) {
         obj.weather[0].icon
       ).src;
 
+      document.getElementById("date_time").innerHTML =
+        new Date().toLocaleString();
       document.getElementById("maxmin").innerHTML = currentLocation.minmax;
       document.getElementById("current_zone_name").innerHTML =
         currentLocation.city;
