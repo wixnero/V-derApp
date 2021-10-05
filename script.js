@@ -163,39 +163,8 @@ function CheckIfFavorite() {
   }
 }
 
-//<comment>
-// Checks if current location is in the list of favorites.
-// Only if element is not in list, you can add it to favorites.
-//</comment>
-function CheckIfFavorite() {
-  if (favorites.length < 1) {
-    document.getElementById("favorite_star_div").innerHTML = "";
-    document
-      .getElementById("favorite_star_div")
-      .appendChild(DrawFavoriteStar("-"));
-    document.getElementById("add_favorite").innerHTML = "Add to favorites";
-  } else {
-    for (i = 0; i < favorites.length; i++) {
-      console.log(favorites[i]);
-      if (
-        favorites[i] == document.getElementById("current_zone_name").innerHTML
-      ) {
-        document.getElementById("add_favorite").innerHTML = "";
-        document.getElementById("favorite_star_div").innerHTML = "";
-        document
-          .getElementById("favorite_star_div")
-          .appendChild(DrawFavoriteStar("favorite"));
-        break;
-      } else {
-        document.getElementById("favorite_star_div").innerHTML = "";
-        document
-          .getElementById("favorite_star_div")
-          .appendChild(DrawFavoriteStar("-"));
-        document.getElementById("add_favorite").innerHTML = "Add to favorites";
-      }
-    }
-  }
-}
+
+
 
 //<comment>
 // Gets loads API information based on current location.
@@ -279,38 +248,7 @@ function filterAndDisplayDays(obj) {
   }
 }
 
-//<comment>
-// Checks if the current selected zone is an favorite.
-// Items in the favorite list wont get the option to get added again.
-//</comment>
-function CheckIfFavorite() {
-  if (favorites.length < 1) {
-    document.getElementById("favorite_star_div").innerHTML = "";
-    document
-      .getElementById("favorite_star_div")
-      .appendChild(DrawFavoriteStar("-"));
-    document.getElementById("add_favorite").innerHTML = "Add to favorites";
-  } else {
-    for (i = 0; i < favorites.length; i++) {
-      if (
-        favorites[i] == document.getElementById("current_zone_name").innerHTML
-      ) {
-        document.getElementById("add_favorite").innerHTML = "";
-        document.getElementById("favorite_star_div").innerHTML = "";
-        document
-          .getElementById("favorite_star_div")
-          .appendChild(DrawFavoriteStar("favorite"));
-        break;
-      } else {
-        document.getElementById("favorite_star_div").innerHTML = "";
-        document
-          .getElementById("favorite_star_div")
-          .appendChild(DrawFavoriteStar("-"));
-        document.getElementById("add_favorite").innerHTML = "Add to favorites";
-      }
-    }
-  }
-}
+
 
 //<comment>
 // Loads the localy stored array of favorites.
