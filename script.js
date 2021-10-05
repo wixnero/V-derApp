@@ -355,36 +355,9 @@ function DrawFavoriteStar(marked) {
   return canvas;
 }
 
-//<comment>
-// Gets the correlated wheater icon based on the value passed
-// as parameter.
-//</comment>
-function CreateWeatherIcon(iconCode) {
-  var iconIMG = document.createElement("img");
 
-  iconIMG.src = "https://openweathermap.org/img/wn/" + iconCode + "@4x.png";
-  iconIMG.className = "weatherIcon";
 
-  return iconIMG;
-}
 
-//<comment>
-// Inserts all items from the faviorite array into the
-// dropdown HTML element.
-//</comment>
-function InsertFavoritesDropdown() {
-  var dropdown = document.getElementById("ddmenu");
-  dropdown.innerText = "";
-  favorites.forEach((element) => {
-    var favorite = document.createElement("LI");
-    var favoriteNode = document.createTextNode(element);
-    favorite.className = "favorite_item";
-    favorite.addEventListener("click", (event) => GoToFavorite(favoriteNode));
-    favorite.appendChild(favoriteNode);
-
-    dropdown.appendChild(favorite);
-  });
-}
 
 //<comment>
 // Goes to the favorite that is selected my the user.
